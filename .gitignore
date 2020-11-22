@@ -1,0 +1,6 @@
+node_modules
+database
+.env
+.authorized_servers.json
+.pool_of_servers.json
+git_push.sh
