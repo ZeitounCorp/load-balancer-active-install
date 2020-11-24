@@ -15,7 +15,7 @@ This repository comes from the main project [/ZeitounCorp/load-balancer/servers/
 - Add an Array of servers that you want to include in the load-balancer
 
 ### Get the 'freest' server from your pool of servers
-- Make a request to the endpoint ```/launchable/lb/server_to_use```, => Should return an object:
+- Make a ```GET``` request to the endpoint ```/launchable/lb/server_to_use```, => Should return an object:
 ``` json
 {
     "most_viable_server": {
