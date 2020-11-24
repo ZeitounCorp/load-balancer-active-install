@@ -2,7 +2,7 @@
 This repository comes from the main project [/ZeitounCorp/load-balancer/servers/Load-Balancer](https://github.com/ZeitounCorp/load-balancer)
 
 ## Post-install requirements
-- ```cd Load-Balancer```
+- ```cd ~/load-balancer-active-install```
 - ```touch .authorized_servers.json .env .pool_of_servers.json```
 
 ### .authorized_servers.json
