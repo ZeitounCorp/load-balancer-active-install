@@ -2,6 +2,7 @@ require('dotenv').config()
 const cors = require("cors");
 const port = process.env.PORT || 3000;
 const authorized_servers = require('./.authorized_servers.json');
+const { db } = require('./database/');
 
 // Express service
 const express = require('express');
@@ -13,22 +14,29 @@ app.use(cors({
   credentials: true
 }));
 
-// Require utilities to create a database
-const low = require('lowdb');
-const lodashId = require('lodash-id');
-const FileSync = require('lowdb/adapters/FileSync');
-
-// Instanciate the database
-const adapter = new FileSync('./database/db.json');
-const db = low(adapter);
-db.defaults({ calls: [], errors: [], stats: [] })
+// Initalize database if ./database/db.json is empty
+db.defaults({ calls: [], errors: [], counts: { errors: 0, success: 0 } })
   .write();
-
-// Generate auto_ids for inserts in db
-db._.mixin(lodashId);
 
 // Format responses and requests to json 
 app.use(express.json());
+
+/**
+ * Routes' imports 
+ */
+const CPU = require('./routes/cpu');
+const HDMEM = require('./routes/hmemory');
+const PROCESSES = require('./routes/processes');
+const RAM = require('./routes/ram');
+const WHICHSERV = require('./routes/which_server');
+/**
+ * Routes Middleware
+ */
+app.use('/cpu', CPU); // Get CPU stats for each server
+app.use('/hmem', HDMEM); // Get Hard Drive memory available on each server
+app.use('/processes', PROCESSES); // Get Processes running on each server
+app.use('/ram', RAM); // Get RAM memory available on each server
+app.use('/launchable', WHICHSERV); // Get the server to use depending on memory, cpu and ram available
 
 /**
  *  Launching the api

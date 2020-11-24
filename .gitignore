@@ -1,5 +1,5 @@
 node_modules
-database
+database/db.json
 .env
 .authorized_servers.json
 .pool_of_servers.json
