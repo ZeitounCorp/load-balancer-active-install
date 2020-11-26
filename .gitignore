@@ -4,3 +4,4 @@ database/db.json
 .authorized_servers.json
 .pool_of_servers.json
 git_push.sh
+INSTALL_LB.md
