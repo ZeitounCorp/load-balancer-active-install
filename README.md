@@ -2,7 +2,7 @@
 This repository comes from the main project [/ZeitounCorp/load-balancer/servers/Load-Balancer](https://github.com/ZeitounCorp/load-balancer)
 
 ## Auto-Install script
--```curl -o- https://raw.githubusercontent.com/ZeitounCorp/load-balancer/master/install_active.sh | bash```
+- ```curl -o- https://raw.githubusercontent.com/ZeitounCorp/load-balancer/master/install_active.sh | bash```
 
 ## Post-install requirements
 - ```cd ~/load-balancer-active-install```
