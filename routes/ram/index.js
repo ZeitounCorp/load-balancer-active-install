@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const axios = require('axios').default;
-const pool_of_servers = require('../../.pool_of_servers.json');
+const pool_of_servers_nf = require('../../.pool_of_servers.json');
+const pool_of_servers = pool_of_servers_nf.filter((s => s.itp === true));
 const isReachable = require('is-reachable');
 const { setInDb } = require('../../database/');
 
@@ -26,7 +27,7 @@ router.get('/lb/get_ram_info', async function (req, res) {
   try {
     const get_ram_info_from_servers = [];
     for (let i = 0; i < pool_of_servers.length; i++) {
-      const server = pool_of_servers[i];
+      const server = pool_of_servers[i].server_domain;
       if (await isReachable(server)) {
 
         const url_endp = `${server}/r_memory/get_ram_info`;

@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const axios = require('axios').default;
-const pool_of_servers = require('../../.pool_of_servers.json');
+const pool_of_servers_nf = require('../../.pool_of_servers.json');
+const pool_of_servers = pool_of_servers_nf.filter((s => s.itp === true));
 const isReachable = require('is-reachable');
 const { setInDb } = require('../../database/');
 
@@ -26,7 +27,7 @@ router.get('/lb/processes_list_by_status', async function (req, res) {
   try {
     const processes_list = [];
     for (let i = 0; i < pool_of_servers.length; i++) {
-      const server = pool_of_servers[i];
+      const server = pool_of_servers[i].server_domain;
       if (await isReachable(server)) {
 
         const url_endp = `${server}/processes/processes_list_by_status`;
@@ -76,7 +77,7 @@ router.get('/lb/processes_list', async function (req, res) {
   try {
     const processes_list = [];
     for (let i = 0; i < pool_of_servers.length; i++) {
-      const server = pool_of_servers[i];
+      const server = pool_of_servers[i].server_domain;
       if (await isReachable(server)) {
 
         const url_endp = `${server}/processes/processes_list`;
@@ -116,7 +117,7 @@ router.get('/lb/most_intensive_process', async function (req, res) {
   try {
     const most_intensive_processes = [];
     for (let i = 0; i < pool_of_servers.length; i++) {
-      const server = pool_of_servers[i];
+      const server = pool_of_servers[i].server_domain;
       if (await isReachable(server)) {
 
         const url_endp = `${server}/processes/most_intensive_process`;

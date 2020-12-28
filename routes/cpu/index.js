@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const axios = require('axios').default;
-const pool_of_servers = require('../../.pool_of_servers.json');
+const pool_of_servers_nf = require('../../.pool_of_servers.json');
+const pool_of_servers = pool_of_servers_nf.filter(( s => s.itp === true ));
 const isReachable = require('is-reachable');
 const { setInDb } = require('../../database/');
 
@@ -16,7 +17,7 @@ router.get('/lb/cpuLoad', async function (req, res) {
   try {
     const loads = [];
     for (let i = 0; i < pool_of_servers.length; i++) {
-      const server = pool_of_servers[i];
+      const server = pool_of_servers[i].server_domain;
       if (await isReachable(server)) {
 
         const url_endp = `${server}/cpu_usage/cpuLoad`;
@@ -65,7 +66,7 @@ router.get('/lb/cpuLoadOn', async function (req, res) {
   try {
     const loads = [];
     for (let i = 0; i < pool_of_servers.length; i++) {
-      const server = pool_of_servers[i];
+      const server = pool_of_servers[i].server_domain;
       if (await isReachable(server)) {
 
         const url_endp = `${server}/cpu_usage/cpuLoadOn`;
@@ -103,7 +104,7 @@ router.get('/lb/cpuLoadOnEach', async function (req, res) {
   try {
     const loads = [];
     for (let i = 0; i < pool_of_servers.length; i++) {
-      const server = pool_of_servers[i];
+      const server = pool_of_servers[i].server_domain;
       if (await isReachable(server)) {
 
         const url_endp = `${server}/cpu_usage/cpuLoadOnEach`;
@@ -141,7 +142,7 @@ router.get('/lb/cpusAvgSpeed', async function (req, res) {
   try {
     const speeds = [];
     for (let i = 0; i < pool_of_servers.length; i++) {
-      const server = pool_of_servers[i];
+      const server = pool_of_servers[i].server_domain;
       if (await isReachable(server)) {
 
         const url_endp = `${server}/cpu_usage/cpusAvgSpeed`;
