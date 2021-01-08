@@ -22,6 +22,11 @@ db.defaults({ calls: [], errors: [], counts: { errors: 0, success: 0 } })
 app.use(express.json());
 
 /**
+ * Tasks' import
+ */
+require('./tasks');
+
+/**
  * Routes' imports 
  */
 const CPU = require('./routes/cpu');
@@ -29,6 +34,7 @@ const HDMEM = require('./routes/hmemory');
 const PROCESSES = require('./routes/processes');
 const RAM = require('./routes/ram');
 const WHICHSERV = require('./routes/which_server');
+const DASHBOARD = require('./routes/dashboard');
 /**
  * Routes Middleware
  */
@@ -37,6 +43,7 @@ app.use('/hmem', HDMEM); // Get Hard Drive memory available on each server
 app.use('/processes', PROCESSES); // Get Processes running on each server
 app.use('/ram', RAM); // Get RAM memory available on each server
 app.use('/launchable', WHICHSERV); // Get the server to use depending on memory, cpu and ram available
+app.use('/ext', DASHBOARD);
 
 /**
  *  Launching the api

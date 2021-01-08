@@ -10,13 +10,17 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.21.0",
+    "axios": "^0.21.1",
     "cors": "^2.8.5",
     "cron": "^1.8.2",
     "dotenv": "^8.2.0",
+    "edit-json-file": "^1.5.0",
     "express": "^4.17.1",
     "is-reachable": "^5.0.0",
     "lodash-id": "^0.14.0",
-    "lowdb": "^1.0.0"
+    "lowdb": "^1.0.0",
+    "sha1": "^1.1.1",
+    "uniqid": "^5.2.0",
+    "xml2json": "^0.12.0"
   }
 }
