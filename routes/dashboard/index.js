@@ -326,7 +326,7 @@ router.get('/dashboard/get_list_meetings', async function (req, res) {
     const response = await axios.get(list_meets_endpoint_bbb);
 
     if (response) {
-      const data = parser.toJson(response.data, { object: true }).response;
+      const data = parser.toJson(response.data, { object: true, coerce: true }).response;
       if (data.returncode === 'SUCCESS') {
         res.send({ response: data, success: true });
       } else {
