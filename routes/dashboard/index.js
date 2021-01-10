@@ -36,7 +36,7 @@ router.get('/dashboard/get_pool', async function (req, res) {
 
 });
 
-router.get('/dashboard/add_server', async function (req, res) {
+router.post('/dashboard/add_server', async function (req, res) {
   if (!req.headers['api_key'] || req.headers['api_key'] !== process.env.API_KEY) {
     setInDb('errors', { error: api_key_missing, endpoint: '/ext/dashboard/add_server' });
     return res.send({ status: 400, error: api_key_missing });
@@ -71,7 +71,7 @@ router.get('/dashboard/add_server', async function (req, res) {
 
 });
 
-router.get('/dashboard/pause_server', async function (req, res) {
+router.post('/dashboard/pause_server', async function (req, res) {
   if (!req.headers['api_key'] || req.headers['api_key'] !== process.env.API_KEY) {
     setInDb('errors', { error: api_key_missing, endpoint: '/ext/dashboard/pause_server' });
     return res.send({ status: 400, error: api_key_missing });
@@ -100,7 +100,7 @@ router.get('/dashboard/pause_server', async function (req, res) {
   res.send({ server_paused: server_name, pool });
 });
 
-router.get('/dashboard/unpause_server', async function (req, res) {
+router.post('/dashboard/unpause_server', async function (req, res) {
   if (!req.headers['api_key'] || req.headers['api_key'] !== process.env.API_KEY) {
     setInDb('errors', { error: api_key_missing, endpoint: '/ext/dashboard/unpause_server' });
     return res.send({ status: 400, error: api_key_missing });
@@ -129,7 +129,7 @@ router.get('/dashboard/unpause_server', async function (req, res) {
   res.send({ server_unpaused: server_name, pool });
 });
 
-router.get('/dashboard/remove_server', async function (req, res) {
+router.post('/dashboard/remove_server', async function (req, res) {
   if (!req.headers['api_key'] || req.headers['api_key'] !== process.env.API_KEY) {
     setInDb('errors', { error: api_key_missing, endpoint: '/ext/dashboard/remove_server' });
     return res.send({ status: 400, error: api_key_missing });
@@ -159,7 +159,7 @@ router.get('/dashboard/remove_server', async function (req, res) {
   res.send({ server_removed: server_name, pool });
 });
 
-router.get('/dashboard/terminal', async function (req, res) {
+router.post('/dashboard/terminal', async function (req, res) {
   if (!req.headers['api_key'] || req.headers['api_key'] !== process.env.API_KEY) {
     setInDb('errors', { error: api_key_missing, endpoint: '/ext/dashboard/terminal' });
     return res.send({ status: 400, error: api_key_missing });
@@ -306,7 +306,7 @@ router.post('/dashboard/create_room', async function (req, res) {
   }
 });
 
-router.get('/dashboard/get_list_meetings', async function (req, res) {
+router.post('/dashboard/get_list_meetings', async function (req, res) {
   if (!req.headers['api_key'] || req.headers['api_key'] !== process.env.API_KEY) {
     setInDb('errors', { error: api_key_missing, endpoint: '/ext/dashboard/get_list_meetings' });
     return res.send({ status: 400, error: api_key_missing });
