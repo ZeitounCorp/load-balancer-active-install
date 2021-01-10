@@ -7,7 +7,7 @@ const { setInDb } = require('../../database/');
 const fs = require('fs');
 
 const readJson = (path, cb) => {
-  fs.readFile(require.resolve(path), (err, data) => {
+  fs.readFile(path, (err, data) => {
     if (err)
       cb(err)
     else
