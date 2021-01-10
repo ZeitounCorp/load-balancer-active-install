@@ -197,11 +197,10 @@ router.post('/dashboard/terminal', async function (req, res) {
 
       const server_to_reach = `${host}/enhanced/terminal_cmd`;
 
-      const response = await axios.post(server_to_reach, {
+      const response = await axios.post(server_to_reach, axios_body, {
         headers: {
           'api_key': process.env.API_KEY
-        },
-        data: axios_body
+        }
       });
 
       if (response.data.success) {
