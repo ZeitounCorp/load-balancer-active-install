@@ -15,7 +15,6 @@ const readJson = (path, cb) => {
   })
 }
 
-
 const api_key_missing = 'You didn\'t provide a valid api key || headers[\'api_key\'] is missing';
 
 router.get('/lb/server_to_use', async function (req, res) {
@@ -24,7 +23,7 @@ router.get('/lb/server_to_use', async function (req, res) {
     return res.send({ status: 400, error: api_key_missing });
   }
 
-  readJson(path.join(__dirname, '../../.pool_of_servers.json'), (err, pool) => {
+  readJson(path.join(__dirname, '../../.pool_of_servers.json'), async (err, pool) => {
     if (err) {
       console.log(err);
     }
@@ -72,7 +71,6 @@ router.get('/lb/server_to_use', async function (req, res) {
       return res.send({ status: 400, error });
     }
   });
-
 });
 
 module.exports = router;
