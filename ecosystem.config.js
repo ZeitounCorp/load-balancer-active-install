@@ -2,7 +2,7 @@ module.exports = {
   apps: [{
     name: "load_balancer",
     script: "./server_lb.js",
-    watch: ["./.pool_of_servers.json", "./.authorized_servers.json", "./.env"],
+    watch: ["./.authorized_servers.json", "./.env"],
     // Delay between restart
     autorestart: true,
     watch_delay: 100,

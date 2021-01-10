@@ -1,10 +1,29 @@
 const express = require('express');
 const router = express.Router();
 const axios = require('axios').default;
-const pool_of_servers_nf = require('../../.pool_of_servers.json');
-const pool_of_servers = pool_of_servers_nf.filter((s => s.itp === true));
+const path = require('path');
 const isReachable = require('is-reachable');
 const { setInDb } = require('../../database/');
+const fs = require('fs');
+
+const pool_of_servers_nf = readJson(path.join(__dirname, '../../.pool_of_servers.json'), (err, pool) => {
+  if(err) {
+    console.log(err);
+  }
+  return pool;
+});
+console.log(pool_of_servers_nf);
+const pool_of_servers = pool_of_servers_nf.filter((s => s.itp === true));
+
+const readJson = (path, cb) => {
+  fs.readFile(require.resolve(path), (err, data) => {
+    if (err)
+      cb(err)
+    else
+      cb(null, JSON.parse(data))
+  })
+}
+
 
 const api_key_missing = 'You didn\'t provide a valid api key || headers[\'api_key\'] is missing';
 
