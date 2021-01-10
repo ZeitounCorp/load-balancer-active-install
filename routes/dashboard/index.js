@@ -49,7 +49,7 @@ router.post('/dashboard/add_server', async function (req, res) {
   }
 
   const server_to_add = {
-    server_domain: `https://${server_name}.beecome.io:5555`,
+    server_domain: `http://${server_name}.beecome.io:5555`,
     itp: true
   }
 
