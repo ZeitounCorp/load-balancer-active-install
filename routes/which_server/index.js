@@ -5,8 +5,14 @@ const pool_of_servers_nf = require('../../.pool_of_servers.json');
 const pool_of_servers = pool_of_servers_nf.filter((s => s.itp === true));
 const isReachable = require('is-reachable');
 const { setInDb } = require('../../database/');
+const path = require('path');
+const editJsonFile = require("edit-json-file");
 
 const api_key_missing = 'You didn\'t provide a valid api key || headers[\'api_key\'] is missing';
+
+let file = editJsonFile(path.join(__dirname, '../../.pool_of_servers.json'), {
+  autosave: true
+});
 
 router.get('/lb/server_to_use', async function (req, res) {
   if (!req.headers['api_key'] || req.headers['api_key'] !== process.env.API_KEY) {
@@ -14,10 +20,14 @@ router.get('/lb/server_to_use', async function (req, res) {
     return res.send({ status: 400, error: api_key_missing });
   }
 
+  let updated_pool = file.toObject();
+
+  updated_pool = updated_pool.filter((s => s.itp === true))
+
   try {
     const get_vital_infos = [];
-    for (let i = 0; i < pool_of_servers.length; i++) {
-      const server = pool_of_servers[i].server_domain;
+    for (let i = 0; i < updated_pool.length; i++) {
+      const server = updated_pool[i].server_domain;
       const hostname = server.substring(0, server.lastIndexOf(':'));
 
       if (await isReachable(server)) {
