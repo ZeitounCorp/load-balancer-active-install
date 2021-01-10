@@ -27,8 +27,7 @@ router.get('/lb/server_to_use', async function (req, res) {
     if (err) {
       console.log(err);
     }
-
-    console.log(pool);
+    
     const pool_of_servers = pool.filter((s => s.itp === true));
 
     try {

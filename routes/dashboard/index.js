@@ -4,8 +4,6 @@ const path = require('path');
 const axios = require('axios').default;
 const editJsonFile = require("edit-json-file");
 const isReachable = require('is-reachable');
-const pool_of_servers_nf = require('../../.pool_of_servers.json');
-const pool_of_servers = pool_of_servers_nf.filter((s => s.itp === true));
 const sha1 = require('sha1');
 const uniqid = require('uniqid');
 const parser = require('xml2json');
@@ -53,11 +51,13 @@ router.post('/dashboard/add_server', async function (req, res) {
     itp: true
   }
 
-  const index = pool_of_servers_nf.length;
+  let updated_pool = file.toObject();
+
+  const index = updated_pool.length;
 
   file.set(`${index}`, server_to_add);
 
-  const updated_pool = file.toObject();
+  updated_pool = file.toObject();
 
   for (let s of updated_pool) {
     let serv = s;
@@ -83,11 +83,13 @@ router.post('/dashboard/pause_server', async function (req, res) {
     return res.send({ status: 400, error: 'You didn\'t provide a server_name' });
   }
 
-  const index = pool_of_servers.findIndex((s) => s.server_domain.includes(server_name));
+  let updated_pool = file.toObject();
+
+  const index = updated_pool.findIndex((s) => s.server_domain.includes(server_name));
 
   file.set(`${index}.itp`, false);
 
-  const updated_pool = file.toObject();
+  updated_pool = file.toObject();
 
   for (let s of updated_pool) {
     let serv = s;
@@ -112,11 +114,13 @@ router.post('/dashboard/unpause_server', async function (req, res) {
     return res.send({ status: 400, error: 'You didn\'t provide a server_name' });
   }
 
-  const index = pool_of_servers_nf.findIndex((s) => s.server_domain.includes(server_name));
+  let updated_pool = file.toObject();
+
+  const index = updated_pool.findIndex((s) => s.server_domain.includes(server_name));
 
   file.set(`${index}.itp`, true);
 
-  const updated_pool = file.toObject();
+  updated_pool = file.toObject();
 
   for (let s of updated_pool) {
     let serv = s;
@@ -141,12 +145,14 @@ router.post('/dashboard/remove_server', async function (req, res) {
     return res.send({ status: 400, error: 'You didn\'t provide a server_name' });
   }
 
-  const index = pool_of_servers_nf.findIndex((s) => s.server_domain.includes(server_name));
+  let updated_pool = file.toObject();
+
+  const index = updated_pool.findIndex((s) => s.server_domain.includes(server_name));
 
   file.set(`${index}.removed`, true);
   file.set(`${index}.itp`, false);
 
-  const updated_pool = file.toObject();
+  updated_pool = file.toObject();
 
   for (let s of updated_pool) {
     let serv = s;
@@ -177,8 +183,10 @@ router.post('/dashboard/terminal', async function (req, res) {
     return res.send({ status: 400, error: 'You didn\'t provide a command' });
   }
 
-  const index = pool_of_servers_nf.findIndex((s) => s.server_domain.includes(server_name));
-  const host = pool_of_servers_nf[index].server_domain;
+  let updated_pool = file.toObject();
+
+  const index = updated_pool.findIndex((s) => s.server_domain.includes(server_name));
+  const host = updated_pool[index].server_domain;
 
   const axios_body = {
     cmd: cmd
@@ -358,7 +366,7 @@ router.post('/dashboard/join_room', async function (req, res) {
 
   const join_room_endpoint_bbb = `https://${host}/bigbluebutton/api/join?${stringQuery}`;
 
-  res.send({joinUrl: join_room_endpoint_bbb});
+  res.send({ joinUrl: join_room_endpoint_bbb });
 });
 
 
