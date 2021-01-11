@@ -17,11 +17,10 @@ const job = new CronJob('00 00 07 * * *', async function () {
           cmd: 'pm2 restart 0'
         };
 
-        const response = await axios.post(url_endp, {
+        const response = await axios.post(url_endp, axios_body, {
           headers: {
             'api_key': process.env.API_KEY
-          },
-          data: axios_body
+          }
         });
         if(response.data.success) {
           console.log('success running pm2 restart 0');
