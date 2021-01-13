@@ -368,6 +368,28 @@ router.post('/dashboard/join_room', async function (req, res) {
   res.send({ joinUrl: join_room_endpoint_bbb });
 });
 
+router.get('/dashboard/join_room_as_guest', async function (req, res) {
+  const queries_missing = 'You forgot to provide a meetingID || a guestName || a secretKey || a host || the modPassword in the request query params';
+  if (!req.query.meetingID || !req.query.guestName || !req.query.secretKey || !req.query.host || !req.query.modPassword) {
+    setInDb('errors', { error: queries_missing, endpoint: '/ext/dashboard/join_room_as_guest' });
+    return res.send({ status: 400, error: queries_missing });
+  }
+
+  const { host, secretKey, guestName, meetingID, modPassword } = req.query;
+
+  let stringQuery = `meetingID=${meetingID}&fullName=${guestName}&password=${modPassword}`;
+
+  const compute = 'join' + stringQuery + secretKey;
+
+  const checksum = sha1(compute);
+
+  stringQuery += `&checksum=${checksum}`;
+
+  const join_room_endpoint_bbb = `https://${host}/bigbluebutton/api/join?${stringQuery}`;
+
+  res.redirect(join_room_endpoint_bbb);
+});
+
 
 
 module.exports = router;
