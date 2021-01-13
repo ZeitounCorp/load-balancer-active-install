@@ -387,7 +387,7 @@ router.get('/dashboard/join_room_as_guest', async function (req, res) {
 
   const join_room_endpoint_bbb = `https://${host}/bigbluebutton/api/join?${stringQuery}`;
 
-  res.send({ join_room_endpoint_bbb });
+  res.redirect(join_room_endpoint_bbb);
 });
 
 
