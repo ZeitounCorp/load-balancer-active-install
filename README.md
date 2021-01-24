@@ -12,7 +12,7 @@ This repository comes from the main project [/ZeitounCorp/load-balancer/servers/
 - Add an Array of servers that are allowed to access the API
 
 ### .env
-- Must include an API_KEY=the_key_you_generated_to_secure_your_api and a PORT(else served over port 3000)
+- Must include an API_KEY=the_key_you_generated_to_secure_your_api, a PORT(else served over port 3000) and a SSECRET_KEY that is equal to the Secret field returned from the cmd: ```bbb-conf --secret```
 
 ### .pool_of_servers.json
 - Add an Array of servers that you want to include in the load-balancer

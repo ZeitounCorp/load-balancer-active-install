@@ -24,7 +24,7 @@ app.use(express.json());
 /**
  * Tasks' import
  */
-// require('./tasks');
+require('./tasks');
 
 /**
  * Routes' imports 

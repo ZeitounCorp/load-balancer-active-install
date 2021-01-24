@@ -1,38 +1,60 @@
 const CronJob = require('cron').CronJob;
 const axios = require('axios').default;
 const isReachable = require('is-reachable');
-const pool_of_servers_nf = require('../.pool_of_servers.json');
-const pool_of_servers = pool_of_servers_nf.filter((s => s.itp === true));
+const editJsonFile = require("edit-json-file");
+const sha1 = require('sha1');
+const parser = require('xml2json');
+const path = require('path');
 
-const job = new CronJob('00 00 07 * * *', async function () {
+let file = editJsonFile(path.join(__dirname, '../.pool_of_servers.json'), {
+  autosave: true
+});
+
+const job = new CronJob('0 */5 * * * *', async function () {
   const d = new Date();
-  console.log(d);
+  console.log(d, 'Checking on webhook');
+  const updated_pool = file.toObject();
+  const pool = Array.from(updated_pool);
+  const { SSECRET_KEY } = process.env;
   try {
-    for (let i = 0; i < pool_of_servers.length; i++) {
-      const server = pool_of_servers[i].server_domain;
+    for (let i = 0; i < pool.length; i++) {
+      const server = pool[i].server_domain;
       if (await isReachable(server)) {
-        const url_endp = `${server}/enhanced/terminal_cmd`;
 
-        const axios_body = {
-          cmd: 'pm2 restart 0'
-        };
+        let stringQuery = `callbackURL=https://www.beecome.io/video/hook/bbb/callback`;
 
-        const response = await axios.post(url_endp, axios_body, {
-          headers: {
-            'api_key': process.env.API_KEY
+        const compute = 'create' + stringQuery + SSECRET_KEY;
+
+        const checksum = sha1(compute);
+
+        stringQuery += `&checksum=${checksum}`;
+
+        const host = new URL(server).hostname;
+
+        const create_hook = `https://${host}/bigbluebutton/api/hooks/create?${stringQuery}`;
+
+        const response = await axios.get(create_hook);
+
+        if (response) {
+          const data = parser.toJson(response.data, { object: true, coerce: true }).response;
+          if (data.returncode === 'SUCCESS') {
+            if (!data.messageKey) {
+              console.log(`Created a hook on server: ${host}, hookID: ${data.hookID}`);
+            } else {
+              console.log(`Hook already registered on server: ${host}, messageKey: ${data.messageKey}, hookID: ${data.hookID}`);
+            }
+          } else {
+            console.log(`ERROR => Hook not created on server: ${host}, messageKey: ${data.messageKey}, errorMessage: ${data.message}`);
           }
-        });
-        if(response.data.success) {
-          console.log('success running pm2 restart 0');
         } else {
-          console.log('error running pm2 restart 0, MESSAGE: ' + response.data.text);
+          console.log(`No response for hooks on server: ${host}`);
         }
       } else {
-        console.log('error running pm2 restart 0, SERVER UNREACHABLE: ' + server);
+        console.log('SERVER UNREACHABLE: ' + server);
       }
     }
   } catch (error) {
-    console.log('error running pm2 restart 0, ERROR: ' + error);
+    console.log('ERROR: ' + error);
   }
 });
 
