@@ -10,6 +10,8 @@ let file = editJsonFile(path.join(__dirname, '../.pool_of_servers.json'), {
   autosave: true
 });
 
+const generate_checksum = 
+
 const job = new CronJob('0 */5 * * * *', async function () {
   const d = new Date();
   console.log(d, 'Checking on webhook');
@@ -23,7 +25,7 @@ const job = new CronJob('0 */5 * * * *', async function () {
 
         let stringQuery = `callbackURL=https://www.beecome.io/video/hook/bbb/callback`;
 
-        const compute = 'create' + stringQuery + SSECRET_KEY;
+        const compute = 'hooks/create' + stringQuery + SSECRET_KEY;
 
         const checksum = sha1(compute);
 
