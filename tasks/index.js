@@ -10,8 +10,6 @@ let file = editJsonFile(path.join(__dirname, '../.pool_of_servers.json'), {
   autosave: true
 });
 
-const generate_checksum = 
-
 const job = new CronJob('0 */5 * * * *', async function () {
   const d = new Date();
   console.log(d, 'Checking on webhook');
